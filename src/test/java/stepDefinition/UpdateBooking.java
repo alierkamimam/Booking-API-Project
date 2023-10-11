@@ -18,17 +18,17 @@ public class UpdateBooking extends Hooks {
      * It is required to send the header which is in Content-Type:application/json, Cookie:token={token}
      * And Accept:application/json
      * It is required to send the body which is in JSON format.It contains the following fields:
-     * {
-     * firstname:
-     * lastname:
-     * totalprice:
-     * depositpaid:
-     * bookingdates:{
-     * checkin:
-     * checkout:
-     * }
-     * additionalneeds:
-     * }
+     *     {
+     *         firstname:
+     *         lastname:
+     *         totalprice:
+     *         depositpaid:
+     *         bookingdates:{
+     *             checkin:
+     *             checkout:
+     *         }
+     *         additionalneeds:
+     *     }
      *
      * @param expectedStatus Expected status code is 200
      */
