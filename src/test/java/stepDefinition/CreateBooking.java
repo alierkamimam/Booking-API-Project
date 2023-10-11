@@ -26,9 +26,11 @@ public class CreateBooking extends Hooks {
      *      }
      *      additionalneeds:
      *  }
-     * And it is required to send the header which is in Content-Type:application/json and Accept:application/json
+     * And it is required to send the header which is in Content-Type:application/json 
+     * and Accept:application/json
      *
      * @param expectedStatus    Expected status code is 200
+     * @return                  bookingId
      */
     @Given("Creates a new booking, then verify response and status code {int}")
     public  int createsANewBooking(int expectedStatus) {
