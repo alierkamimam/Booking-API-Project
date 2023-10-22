@@ -12,7 +12,7 @@ public class Hooks {
     /**
      * This is the base class for BOOKING the test classes
      */
-    public static String baseUrl;
+    public  static  String baseUrl; // final
     public static RequestSpecification spec;
     public static Response response;
 
