@@ -1,39 +1,42 @@
 package stepDefinition;
 
-import Hooks.Hooks;
+import Hooks.BaseClass;
 import io.cucumber.java.en.Given;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utilities.ConfigReader;
 
-public class CreateBooking extends Hooks {
+import static Hooks.Hooks.info;
+
+public class CreateBooking extends BaseClass {
 
     /**
      * This method is used to create a new booking.
      * It is using POST method "POST - baseUrl/booking"
      * It is required to send the body which is in JSON format.It contains the following fields:
-     *  {
-     *      firstname:
-     *      lastname:
-     *      totalprice:
-     *      depositpaid:
-     *      bookingdates:{
-     *           checkin:
-     *           checkout:
-     *      }
-     *      additionalneeds:
-     *  }
-     * And it is required to send the header which is in Content-Type:application/json 
+     * {
+     * firstname:
+     * lastname:
+     * totalprice:
+     * depositpaid:
+     * bookingdates:{
+     * checkin:
+     * checkout:
+     * }
+     * additionalneeds:
+     * }
+     * And it is required to send the header which is in Content-Type:application/json
      * and Accept:application/json
      *
-     * @param expectedStatus    Expected status code is 200
-     * @return                  bookingId
+     * @param expectedStatus Expected status code is 200
+     * @return bookingId
      */
     @Given("Creates a new booking, then verify response and status code {int}")
-    public  int createsANewBooking(int expectedStatus) {
+    public int createsANewBooking(int expectedStatus) {
+
+        info("Create Booking Test Started");
 
         String body = "{\n" +
                 "    \"firstname\":\"Inar\",\n" +
@@ -48,7 +51,7 @@ public class CreateBooking extends Hooks {
                 "\n" +
                 "}";
 
-        baseUrl = ConfigReader.getProperty("booking.baseUrl");
+        info("Created Booking Body: " + body);
 
         spec = new RequestSpecBuilder()
                 .setBaseUri(baseUrl)
@@ -66,6 +69,8 @@ public class CreateBooking extends Hooks {
         /* Create a JsonPath object to handle and navigate the JSON response. */
 
         JsonPath jsonPath = response.jsonPath();
+        info("Response: " + jsonPath.prettify());
+        info("Status Code: " + response.getStatusCode());
 
         /* Assert the response body and status code */
 
@@ -79,6 +84,9 @@ public class CreateBooking extends Hooks {
 
         Assert.assertEquals(expectedStatus, response.getStatusCode());
 
-       return jsonPath.getInt("bookingid");
+        int bookingId = jsonPath.getInt("bookingid");
+        info("Booking ID: " + bookingId);
+
+        return bookingId;
     }
 }

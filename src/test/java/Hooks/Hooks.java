@@ -1,27 +1,32 @@
 package Hooks;
 
-
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import utilities.Authentication;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
+import java.util.logging.Logger;
+
+@FieldDefaults(level = AccessLevel.PUBLIC)
 public class Hooks {
 
-    /**
-     * This is the base class for BOOKING the test classes
-     */
-    public  static  String baseUrl; // final
-    public static RequestSpecification spec;
-    public static Response response;
+    static final Logger log = Logger.getLogger(Hooks.class.getName());
 
-    /**
-     * This method is used to generate token
-     * @return token
-     */
-    public String getToken() {
-       return Authentication.generateToken();
+    @Before
+    public static void beforeAll() {
+        log.info("Test is starting..");
+    }
 
+    public static void info(String message) {
+        log.info(message);
+    }
+
+    public static void warn(String message) {
+        log.warning(message);
+    }
+
+    @After
+    public static void afterAll() {
+        log.info("Test is ended");
     }
 }

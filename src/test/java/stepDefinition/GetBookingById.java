@@ -1,6 +1,7 @@
 package stepDefinition;
 
-import Hooks.Hooks;
+import static Hooks.Hooks.info;
+import Hooks.BaseClass;
 import io.cucumber.java.en.Given;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -8,12 +9,11 @@ import io.restassured.http.ContentType;
 
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utilities.ConfigReader;
 
 import static org.junit.Assert.assertEquals;
 
 
-public class GetBookingById extends Hooks {
+public class GetBookingById extends BaseClass {
 
     /**
      * This method is used to get booking information by id.
@@ -26,12 +26,14 @@ public class GetBookingById extends Hooks {
     @Given("Get Booking Information By Id which is crated, then verify response and status code is {int}")
     public void getBookingInformationByIdWhichIsCratedThenVerifyResponseAndStatusCodeIsInt(int expectedStatus) {
 
+        info("Get Booking Test Started");
+
         /* Create a new booking for getting bookingId */
         CreateBooking createBooking = new CreateBooking();
         int bookingId = createBooking.createsANewBooking(200);
 
 
-        baseUrl = ConfigReader.getProperty("booking.baseUrl");
+
         spec = new RequestSpecBuilder()
                 .setBaseUri(baseUrl)
                 .build();
@@ -44,6 +46,7 @@ public class GetBookingById extends Hooks {
 
         /* Create a JsonPath object to handle and navigate the JSON response. */
         JsonPath jsonPath = response.jsonPath();
+        info("Response Body: " + jsonPath.prettify());
 
         /* Verify the response body */
         assertEquals("Inar", jsonPath.getString("firstname"));
@@ -54,6 +57,7 @@ public class GetBookingById extends Hooks {
         assertEquals("2023-01-02", jsonPath.getString("bookingdates.checkout"));
         assertEquals("Breakfast", jsonPath.getString("additionalneeds"));
 
+        info("Status Code: " + response.getStatusCode());
         assertEquals(expectedStatus, response.getStatusCode());
     }
 }

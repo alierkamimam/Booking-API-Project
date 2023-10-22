@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"stepDefinition","Hooks"},
-        tags = "@CreateBooking",
+        tags = "@DeleteBooking",
         dryRun = false
 )
 public class runner {

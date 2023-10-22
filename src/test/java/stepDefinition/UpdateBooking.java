@@ -1,6 +1,6 @@
 package stepDefinition;
 
-import Hooks.Hooks;
+import Hooks.BaseClass;
 import io.cucumber.java.en.Given;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -8,9 +8,10 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import utilities.ConfigReader;
 
+import static Hooks.Hooks.info;
 import static org.junit.Assert.assertEquals;
 
-public class UpdateBooking extends Hooks {
+public class UpdateBooking extends BaseClass {
 
     /**
      * This method is used to update booking information by id
@@ -35,8 +36,9 @@ public class UpdateBooking extends Hooks {
     @Given("Update Booking Information By Id which is crated, then verify response and status code is {int}")
     public void updateBookingInformationByIdWhichIsCratedThenVerifyResponseAndStatusCodeIsInt(int expectedStatus) {
 
-        /* Firstname and lastname are updated */
+        info("Update Booking Test Started");
 
+        /* Firstname and lastname are updated */
         String body = "{\n" +
                 "    \"firstname\":\"John\",\n" +
                 "    \"lastname\":\"Smith\",\n" +
@@ -54,8 +56,6 @@ public class UpdateBooking extends Hooks {
         CreateBooking createBooking = new CreateBooking();
         int bookingId = createBooking.createsANewBooking(200);
 
-
-        baseUrl = ConfigReader.getProperty("booking.baseUrl");
         spec = new RequestSpecBuilder()
                 .setBaseUri(baseUrl)
                 .setBasePath("/booking/" + bookingId)
@@ -72,11 +72,14 @@ public class UpdateBooking extends Hooks {
 
         /* Create a JsonPath object to handle and navigate the JSON response. */
         JsonPath jsonPath = response.jsonPath();
+        info("Response Body: " + jsonPath.prettify());
 
         /* Verify the response body */
         assertEquals("John", jsonPath.getString("firstname"));
         assertEquals("Smith", jsonPath.getString("lastname"));
 
-        assertEquals(expectedStatus, response.getStatusCode());
+        int responseStatusCode = response.getStatusCode();
+        info("Status Code: " + responseStatusCode);
+        assertEquals(expectedStatus, responseStatusCode);
     }
 }
