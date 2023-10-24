@@ -6,11 +6,14 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import org.json.JSONObject;
 import org.junit.Assert;
 
 import static Hooks.Hooks.info;
 
 public class CreateBooking extends BaseClass {
+    JSONObject bookingDates= new JSONObject();
+    JSONObject body = new JSONObject();
 
     /**
      * This method is used to create a new booking.
@@ -38,18 +41,17 @@ public class CreateBooking extends BaseClass {
 
         info("Create Booking Test Started");
 
-        String body = "{\n" +
-                "    \"firstname\":\"Inar\",\n" +
-                "    \"lastname\":\"Academy\",\n" +
-                "    \"totalprice\":1000,\n" +
-                "    \"depositpaid\":true,\n" +
-                "    \"bookingdates\":{\n" +
-                "        \"checkin\":\"2023-01-01\",\n" +
-                "        \"checkout\":\"2023-01-02\"\n" +
-                "    },\n" +
-                "    \"additionalneeds\":\"Breakfast\"\n" +
-                "\n" +
-                "}";
+        body.put("firstname", "Inar");
+        body.put("lastname", "Academy");
+        body.put("totalprice", 1000);
+        body.put("depositpaid", true);
+        body.put("additionalneeds", "breakfast");
+        body.put("bookingdates",
+                bookingDates.put(
+                        "checkin", "2023-01-01"));
+        body.put("bookingdates",
+                bookingDates.put(
+                        "checkout", "2023-01-02"));
 
         info("Created Booking Body: " + body);
 
